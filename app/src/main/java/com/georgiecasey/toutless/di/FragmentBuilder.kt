@@ -1,11 +1,11 @@
 package com.georgiecasey.toutless.di
 
+import com.georgiecasey.toutless.ui.EventsListFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
 interface FragmentBuilder {
-    // todo
-   /* @ContributesAndroidInjector
-    fun bindHome(): HomeFragment*/
+    @ContributesAndroidInjector
+    fun bindEventsListFragment(): EventsListFragment
 }

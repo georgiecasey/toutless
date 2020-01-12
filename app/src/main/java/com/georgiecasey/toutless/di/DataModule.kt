@@ -3,8 +3,8 @@ package com.georgiecasey.toutless.di
 import androidx.room.Room
 import com.georgiecasey.toutless.BuildConfig
 import com.georgiecasey.toutless.ToutlessApplication
+import com.georgiecasey.toutless.api.models.dto.EventDao
 import com.georgiecasey.toutless.room.ToutlessDatabase
-import com.georgiecasey.toutless.room.entities.EventDao
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides

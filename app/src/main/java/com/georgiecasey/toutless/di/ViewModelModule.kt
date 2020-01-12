@@ -2,6 +2,7 @@ package com.georgiecasey.toutless.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.georgiecasey.toutless.ui.EventsViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -11,10 +12,8 @@ abstract class ViewModelModule {
     @Binds
     abstract fun provideViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
 
-
-    // todo
-   /* @Binds
+    @Binds
     @IntoMap
-    @ViewModelKey(HomeViewModel::class)
-    abstract fun provideHomeViewModel(viewModel: HomeViewModel): ViewModel*/
+    @ViewModelKey(EventsViewModel::class)
+    abstract fun provideEventsViewModel(viewModel: EventsViewModel): ViewModel
 }
