@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.georgiecasey.toutless.ToutlessApplication
 import com.georgiecasey.toutless.api.ToutlessApi
-import com.georgiecasey.toutless.api.models.dto.EventDao
-import com.georgiecasey.toutless.api.models.dto.Events
+import com.georgiecasey.toutless.room.entities.Event
+import com.georgiecasey.toutless.room.entities.EventDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -20,25 +20,28 @@ constructor(
     private val application: ToutlessApplication,
     private val toutlessApi: ToutlessApi
 ) : ViewModel() {
-    private val _inboxMessagesListLiveData = MutableLiveData<List<Events.Event>>()
-    val eventsListLiveData: LiveData<List<Events.Event>>
-        get() = _inboxMessagesListLiveData
+    private val _eventsListLiveData = MutableLiveData<List<Event>>()
+    val eventsListLiveData: LiveData<List<Event>>
+        get() = _eventsListLiveData
 
     fun getEvents() =
         viewModelScope.launch(Dispatchers.Default) {
             Timber.d("eventDao.fetchAll")
             val events = eventDao.fetchAll()
             if (events.count() == 0) getEventsRemote()
-            _inboxMessagesListLiveData.postValue(events)
+            _eventsListLiveData.postValue(events)
         }
 
     fun getEventsRemote() {
         viewModelScope.launch(Dispatchers.Default) {
             val events = toutlessApi.getEvents().await()
             if (events.isSuccessful) {
-                eventDao.insertAll(events.body()?.events)
+                val eventsEntities = events.body()?.events?.map {
+                    Event.fromDto(it)
+                }
+                eventDao.insertAll(eventsEntities)
+                _eventsListLiveData.postValue(eventsEntities)
             }
-            getEvents()
         }
     }
 }

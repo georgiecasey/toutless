@@ -1,5 +1,6 @@
 package com.georgiecasey.toutless.room.entities
 
+import androidx.recyclerview.widget.DiffUtil
 import androidx.room.*
 
 @Entity(tableName = "event")
@@ -14,8 +15,36 @@ data class Event(
     @ColumnInfo(name = "number_of_posts")
     val numberOfPosts: Int,
     @ColumnInfo(name = "venue")
-    val venue: String
-)
+    val venue: String,
+    @ColumnInfo(name = "buying_or_selling")
+    val buyingOrSelling: String,
+    @ColumnInfo(name = "is_favourite")
+    val isFavourite: Boolean
+) {
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<Event>() {
+            override fun areItemsTheSame(oldItem: Event, newItem: Event): Boolean {
+                return oldItem.toutlessThreadId == newItem.toutlessThreadId
+            }
+
+            override fun areContentsTheSame(oldItem: Event, newItem: Event): Boolean {
+                return oldItem.hashCode() == newItem.hashCode()
+            }
+        }
+
+        fun fromDto(eventDto: com.georgiecasey.toutless.api.models.dto.Events.Event): Event {
+           return Event(
+               toutlessThreadId = eventDto.toutlessThreadId,
+               eventDates = eventDto.eventDates,
+               eventName = eventDto.eventName,
+               numberOfPosts = eventDto.numberOfPosts,
+               venue = eventDto.venue,
+               buyingOrSelling = "buying",
+               isFavourite = false
+           )
+        }
+    }
+}
 
 @Dao
 interface EventDao {

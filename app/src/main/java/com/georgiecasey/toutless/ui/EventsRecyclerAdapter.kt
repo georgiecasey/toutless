@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.georgiecasey.toutless.R
-import com.georgiecasey.toutless.api.models.dto.Events
+import com.georgiecasey.toutless.room.entities.Event
 import kotlinx.android.synthetic.main.item_event.view.*
 import kotlinx.android.synthetic.main.list_item_event.view.tvEventName
 import timber.log.Timber
@@ -33,7 +33,7 @@ class EventsRecyclerAdapter(private val listener: OnEventClickListener) :
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
         private var view: View = v
-        private var event: Events.Event? = null
+        private var event: Event? = null
 
         init {
             v.setOnClickListener(this)
@@ -45,7 +45,7 @@ class EventsRecyclerAdapter(private val listener: OnEventClickListener) :
             }
         }
 
-        fun bind(event: Events.Event) {
+        fun bind(event: Event) {
             Timber.d("bind")
             this.event = event
             view.tvEventName.text = event.eventName

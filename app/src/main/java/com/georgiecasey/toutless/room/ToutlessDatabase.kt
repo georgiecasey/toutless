@@ -4,13 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.georgiecasey.toutless.api.models.dto.EventDao
-import com.georgiecasey.toutless.api.models.dto.Events
+import com.georgiecasey.toutless.room.entities.Event
+import com.georgiecasey.toutless.room.entities.EventDao
 import com.georgiecasey.toutless.room.entities.Post
 
 @Database(
     entities = [
-        Events.Event::class,
+        Event::class,
         Post::class
     ],
     version = 1
