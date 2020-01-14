@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <io.ghyeok.stickyswitch.widget.StickySwitch
+        android:id="@+id/ssBuyingOrSelling"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:ss_animationDuration="600"
+        app:ss_iconPadding="18dp"
+        app:ss_iconSize="32dp"
+        app:ss_leftIcon="@drawable/ic_buy_sign"
+        app:ss_leftText="I'm Buying"
+        app:ss_rightIcon="@drawable/ic_sell_sign"
+        app:ss_rightText="I'm Selling"
+        app:ss_selectedTextSize="14sp"
+        app:ss_sliderBackgroundColor="@color/colorSliderBackground"
+        app:ss_switchColor="@color/colorSwitchColor"
+        app:ss_textColor="@color/colorSliderBackground"
+        app:ss_textSize="12sp"
+        app:ss_animationType="line"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srSwipe"
+        app:layout_constraintTop_toBottomOf="@id/ssBuyingOrSelling"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginLeft="@dimen/default_padding"
+        android:layout_marginRight="@dimen/default_padding">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPosts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/default_padding">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.georgiecasey.toutless.api.models.dto
+package com.georgiecasey.toutless.api.dto
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

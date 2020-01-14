@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -21,7 +23,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
     buildTypes {
+        debug {
+            resValue("string", "PORT_NUMBER", "8083")
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -61,4 +69,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.0-rc04'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.0-rc04'
     implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
+
+    implementation 'com.github.GwonHyeok:StickySwitch:0.0.16'
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 }

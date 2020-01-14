@@ -6,16 +6,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.georgiecasey.toutless.R
-import com.georgiecasey.toutless.room.entities.Event
-import kotlinx.android.synthetic.main.item_event.view.*
-import kotlinx.android.synthetic.main.list_item_event.view.tvEventName
+import com.georgiecasey.toutless.room.entities.Post
+import kotlinx.android.synthetic.main.item_post.view.*
 import timber.log.Timber
 
-class EventsRecyclerAdapter(private val listener: OnEventClickListener) :
-    ListAdapter<Event, EventsRecyclerAdapter.ViewHolder>(Event.diffUtil) {
+class EventPostsRecyclerAdapter(private val listener: OnEventPostClickListener) :
+    ListAdapter<Post, EventPostsRecyclerAdapter.ViewHolder>(Post.diffUtil) {
 
-    interface OnEventClickListener {
-        fun onEventClicked(toutlessThreadId: String)
+    interface OnEventPostClickListener {
+        fun onEventPostClicked(toutlessPostId: String)
     }
 
     override fun onCreateViewHolder(
@@ -23,7 +22,7 @@ class EventsRecyclerAdapter(private val listener: OnEventClickListener) :
         viewType: Int
     ): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_event, parent, false)
+            .inflate(R.layout.item_post, parent, false)
         return ViewHolder(view)
     }
 
@@ -33,25 +32,24 @@ class EventsRecyclerAdapter(private val listener: OnEventClickListener) :
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
         private var view: View = v
-        private var event: Event? = null
+        private var post: Post? = null
 
         init {
             v.setOnClickListener(this)
         }
 
         override fun onClick(v: View) {
-            event?.let {
-                listener.onEventClicked(it.toutlessThreadId)
+            post?.let {
+                listener.onEventPostClicked(it.toutlessPostId)
             }
         }
 
-        fun bind(event: Event) {
+        fun bind(post: Post) {
             Timber.d("bind")
-            this.event = event
-            view.tvEventName.text = event.eventName
-            view.tvVenue.text = event.venue
-            view.tvEventDates.text = event.eventDates
-            view.tvNumberOfPosts.text = event.numberOfPosts.toString()
+            this.post = post
+            view.tvPostDates.text = post.postTime
+            view.tvPostText.text = post.postText
+            view.tvUsername.text = post.authorId
         }
     }
 }

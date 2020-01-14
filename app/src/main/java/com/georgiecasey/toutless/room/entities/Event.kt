@@ -2,6 +2,7 @@ package com.georgiecasey.toutless.room.entities
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.room.*
+import com.georgiecasey.toutless.ui.BuyingOrSellingField
 
 @Entity(tableName = "event")
 data class Event(
@@ -17,7 +18,7 @@ data class Event(
     @ColumnInfo(name = "venue")
     val venue: String,
     @ColumnInfo(name = "buying_or_selling")
-    val buyingOrSelling: String,
+    val buyingOrSelling: BuyingOrSellingField,
     @ColumnInfo(name = "is_favourite")
     val isFavourite: Boolean
 ) {
@@ -32,14 +33,14 @@ data class Event(
             }
         }
 
-        fun fromDto(eventDto: com.georgiecasey.toutless.api.models.dto.Events.Event): Event {
+        fun fromDto(eventDto: com.georgiecasey.toutless.api.dto.Events.Event): Event {
            return Event(
                toutlessThreadId = eventDto.toutlessThreadId,
                eventDates = eventDto.eventDates,
                eventName = eventDto.eventName,
                numberOfPosts = eventDto.numberOfPosts,
                venue = eventDto.venue,
-               buyingOrSelling = "buying",
+               buyingOrSelling = BuyingOrSellingField.Buying,
                isFavourite = false
            )
         }
@@ -62,4 +63,7 @@ interface EventDao {
 
     @Query("SELECT * FROM event")
     fun fetchAll(): List<Event>
+
+    @Query("UPDATE event SET buying_or_selling = :buyingOrSelling WHERE toutless_thread_id = :toutlessThreadId")
+    fun updateBuyingOrSelling(toutlessThreadId: String, buyingOrSelling: BuyingOrSellingField)
 }

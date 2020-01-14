@@ -4,9 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.georgiecasey.toutless.room.entities.Event
 import com.georgiecasey.toutless.room.entities.EventDao
 import com.georgiecasey.toutless.room.entities.Post
+import com.georgiecasey.toutless.room.entities.PostDao
+import com.georgiecasey.toutless.room.typeconverters.BuyingOrSellingSealedClassTypeConverter
 
 @Database(
     entities = [
@@ -15,8 +18,12 @@ import com.georgiecasey.toutless.room.entities.Post
     ],
     version = 1
 )
+@TypeConverters(
+    BuyingOrSellingSealedClassTypeConverter::class
+)
 abstract class ToutlessDatabase : RoomDatabase() {
     abstract fun eventDao(): EventDao
+    abstract fun postDao(): PostDao
 
     companion object {
         @Volatile

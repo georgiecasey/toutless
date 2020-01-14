@@ -20,6 +20,8 @@ data class Posts(
         @Json(name = "post_time")
         val postTime: String,
         @Json(name = "toutless_post_id")
-        val toutlessPostId: String
+        val toutlessPostId: String,
+        @Json(name = "toutless_thread_id")
+        val toutlessThreadId: String
     )
 }

@@ -11,4 +11,8 @@
     <color name="gray">#6a737c</color>
     <color name="light_gray">#848d95</color>
     <color name="red">#FF0000</color>
+
+    <color name="colorSliderBackground">#FF181821</color>
+    <color name="colorTextColor">#FFFFFFFF</color>
+    <color name="colorSwitchColor">#FF2371FA</color>
 </resources>

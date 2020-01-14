@@ -9,5 +9,16 @@
             android:name="com.georgiecasey.toutless.ui.EventsListFragment"
             android:label="fragment_events_list"
             tools:layout="@layout/fragment_events_list">
+        <action
+            android:id="@+id/action_events_list_to_event_posts_list"
+            app:destination="@id/event_posts_list" />
+    </fragment>
+    <fragment
+        android:id="@+id/event_posts_list"
+        android:name="com.georgiecasey.toutless.ui.EventPostsListFragment"
+        android:label="fragment_event_posts_list"
+        tools:layout="@layout/fragment_event_posts_list">
+        <argument android:name="toutlessThreadId"
+            android:defaultValue="name"/>
     </fragment>
 </navigation>

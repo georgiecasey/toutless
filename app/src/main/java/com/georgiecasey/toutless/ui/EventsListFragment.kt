@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -58,8 +59,12 @@ class EventsListFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener,
         viewModel.getEvents()
     }
 
-    override fun onEventClicked(messageId: String) {
+    override fun onEventClicked(toutlessThreadId: String) {
         Timber.d("event clicked")
+        view?.let {
+            val action = EventsListFragmentDirections.actionEventsListToEventPostsList(toutlessThreadId)
+            Navigation.findNavController(it).navigate(action)
+        }
     }
 
     override fun onDestroyView() {

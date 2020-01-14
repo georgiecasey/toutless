@@ -1,7 +1,7 @@
 package com.georgiecasey.toutless.api
 
+import com.georgiecasey.toutless.api.dto.Events
 import com.georgiecasey.toutless.api.dto.Posts
-import com.georgiecasey.toutless.api.models.dto.Events
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET

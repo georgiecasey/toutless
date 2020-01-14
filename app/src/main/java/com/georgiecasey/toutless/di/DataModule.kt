@@ -5,6 +5,7 @@ import com.georgiecasey.toutless.BuildConfig
 import com.georgiecasey.toutless.ToutlessApplication
 import com.georgiecasey.toutless.room.ToutlessDatabase
 import com.georgiecasey.toutless.room.entities.EventDao
+import com.georgiecasey.toutless.room.entities.PostDao
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -32,4 +33,7 @@ object DataModule {
     fun provideEventDao(database: ToutlessDatabase): EventDao =
         database.eventDao()
 
+    @Provides
+    fun providePostDao(database: ToutlessDatabase): PostDao =
+        database.postDao()
 }
