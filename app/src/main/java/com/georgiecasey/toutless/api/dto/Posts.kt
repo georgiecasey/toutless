@@ -14,8 +14,8 @@ data class Posts(
     data class Post(
         @Json(name = "author_id")
         val authorId: String,
-        @Json(name = "icon")
-        val icon: String,
+        @Json(name = "post_smilies")
+        val postSmilies: String,
         @Json(name = "post_text")
         val postText: String,
         @TimeToMillis

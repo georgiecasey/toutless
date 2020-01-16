@@ -12,8 +12,8 @@ data class Post(
     val toutlessThreadId: String,
     @ColumnInfo(name = "author_id")
     val authorId: String,
-    @ColumnInfo(name = "icon")
-    val icon: String,
+    @ColumnInfo(name = "post_smilies")
+    val postSmilies: String,
     @ColumnInfo(name = "post_text")
     val postText: String,
     @ColumnInfo(name = "post_time")
@@ -35,7 +35,7 @@ data class Post(
                 toutlessPostId = postDto.toutlessPostId,
                 toutlessThreadId = postDto.toutlessThreadId,
                 authorId = postDto.authorId,
-                icon = postDto.icon,
+                postSmilies = postDto.postSmilies,
                 postText = postDto.postText,
                 postTime = postDto.postTime
             )

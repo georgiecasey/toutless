@@ -69,9 +69,9 @@ constructor(
     fun filterPosts(posts: List<Post>, buyingOrSelling: BuyingOrSellingField) {
         when (buyingOrSelling) {
             is BuyingOrSellingField.Buying ->
-                _eventPostsListLiveData.postValue(posts.filter { it.icon == "forsale"})
+                _eventPostsListLiveData.postValue(posts.filter { it.postSmilies == "forsale"})
             is BuyingOrSellingField.Selling ->
-                _eventPostsListLiveData.postValue(posts.filter { it.icon == "wanted"})
+                _eventPostsListLiveData.postValue(posts.filter { it.postSmilies == "wanted"})
         }
     }
 }
