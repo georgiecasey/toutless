@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.georgiecasey.toutless.R
 import com.georgiecasey.toutless.room.entities.Event
 import kotlinx.android.synthetic.main.item_event.view.*
-import kotlinx.android.synthetic.main.list_item_event.view.tvEventName
 import timber.log.Timber
 
 class EventsRecyclerAdapter(private val listener: OnEventClickListener) :

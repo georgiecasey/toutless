@@ -45,20 +45,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvPostDates"
             />
-        <TextView
-            android:id="@+id/tvUsername"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:text="johnnyryan"
-            android:textAppearance="?android:textAppearanceSmall"
-            android:textColor="@color/light_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintTop_toTopOf="parent"
-            />
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
