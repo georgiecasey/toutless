@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.georgiecasey.toutless.R
 import com.georgiecasey.toutless.room.entities.Post
+import com.georgiecasey.toutless.utils.extension.toRelativeTime
 import kotlinx.android.synthetic.main.item_post.view.*
 import timber.log.Timber
 
@@ -47,9 +48,8 @@ class EventPostsRecyclerAdapter(private val listener: OnEventPostClickListener) 
         fun bind(post: Post) {
             Timber.d("bind")
             this.post = post
-            view.tvPostDates.text = post.postTime
+            view.tvPostDates.text = post.postTime.toRelativeTime()
             view.tvPostText.text = post.postText
-            view.tvUsername.text = post.authorId
         }
     }
 }

@@ -17,7 +17,7 @@ data class Post(
     @ColumnInfo(name = "post_text")
     val postText: String,
     @ColumnInfo(name = "post_time")
-    val postTime: String
+    val postTime: Long
 ) {
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<Post>() {

@@ -3,6 +3,7 @@ package com.georgiecasey.toutless.di
 import androidx.room.Room
 import com.georgiecasey.toutless.BuildConfig
 import com.georgiecasey.toutless.ToutlessApplication
+import com.georgiecasey.toutless.api.moshi.TimeToMillisAdapter
 import com.georgiecasey.toutless.room.ToutlessDatabase
 import com.georgiecasey.toutless.room.entities.EventDao
 import com.georgiecasey.toutless.room.entities.PostDao
@@ -18,6 +19,7 @@ object DataModule {
     @Singleton
     fun provideMoshi(): Moshi =
         Moshi.Builder()
+            .add(TimeToMillisAdapter())
             .build()
 
     @Provides
