@@ -69,9 +69,17 @@ constructor(
     fun filterPosts(posts: List<Post>, buyingOrSelling: BuyingOrSellingField) {
         when (buyingOrSelling) {
             is BuyingOrSellingField.Buying ->
-                _eventPostsListLiveData.postValue(posts.filter { it.postSmilies == "forsale"})
+                _eventPostsListLiveData.postValue(
+                    posts
+                        .filter{ it.postSmilies == "forsale" }
+                        .sortedByDescending { it.postTime }
+                )
             is BuyingOrSellingField.Selling ->
-                _eventPostsListLiveData.postValue(posts.filter { it.postSmilies == "wanted"})
+                _eventPostsListLiveData.postValue(
+                    posts
+                        .filter{ it.postSmilies == "wanted" }
+                        .sortedByDescending { it.postTime }
+                )
         }
     }
 }
