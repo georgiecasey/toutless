@@ -39,7 +39,7 @@ constructor(
                 val eventsEntities = events.body()?.events?.map {
                     Event.fromDto(it)
                 }
-                eventDao.insertAll(eventsEntities)
+                eventDao.insertOrUpdateAll(eventsEntities)
                 _eventsListLiveData.postValue(eventsEntities)
             }
         }
