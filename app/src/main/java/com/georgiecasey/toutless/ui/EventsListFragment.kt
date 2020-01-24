@@ -9,8 +9,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.georgiecasey.toutless.R
 import com.tapadoo.pagerpushpoc.arch.BaseFragment
@@ -19,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_events_list.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class EventsListFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, EventsRecyclerAdapter.OnEventClickListener {
+class EventsListFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, EventsRecyclerAdapter.OnEventClickListener{
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: EventsViewModel by lazy {
@@ -50,11 +52,20 @@ class EventsListFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener,
                 DividerItemDecoration.VERTICAL
             )
         )
+        val animator = DefaultItemAnimator()
+        animator.moveDuration = 500
+        rvEvents.itemAnimator = animator
         srSwipe.setOnRefreshListener(this)
+
         viewModel.eventsListLiveData.observe(viewLifecycleOwner, Observer { events ->
             srSwipe.isRefreshing = false
             rvEvents.visibility = View.VISIBLE
-            eventsRecyclerAdapter.submitList(events)
+            eventsRecyclerAdapter.setItems(events)
+        })
+        eventsRecyclerAdapter.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+                rvEvents.scrollToPosition(toPosition)
+            }
         })
         viewModel.getEvents()
     }
@@ -65,6 +76,10 @@ class EventsListFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener,
             val action = EventsListFragmentDirections.actionEventsListToEventPostsList(toutlessThreadId)
             Navigation.findNavController(it).navigate(action)
         }
+    }
+
+    override fun onEventFavouriteClicked(toutlessThreadId: String, isFavourite: Boolean) {
+        viewModel.toggleEventFavourite(toutlessThreadId, isFavourite)
     }
 
     override fun onDestroyView() {

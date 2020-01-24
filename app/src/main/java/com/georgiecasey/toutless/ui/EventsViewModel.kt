@@ -10,7 +10,6 @@ import com.georgiecasey.toutless.room.entities.Event
 import com.georgiecasey.toutless.room.entities.EventDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 class EventsViewModel
@@ -26,7 +25,6 @@ constructor(
 
     fun getEvents() =
         viewModelScope.launch(Dispatchers.Default) {
-            Timber.d("eventDao.fetchAll")
             val events = eventDao.fetchAll()
             if (events.count() == 0) getEventsRemote()
             _eventsListLiveData.postValue(events)
@@ -40,8 +38,15 @@ constructor(
                     Event.fromDto(it)
                 }
                 eventDao.insertOrUpdateAll(eventsEntities)
-                _eventsListLiveData.postValue(eventsEntities)
+                _eventsListLiveData.postValue(eventDao.fetchAll())
             }
+        }
+    }
+
+    fun toggleEventFavourite(toutlessThreadId: String, isFavourite: Boolean) {
+        viewModelScope.launch(Dispatchers.Default) {
+            eventDao.updateFavourite(toutlessThreadId, isFavourite)
+            getEvents();
         }
     }
 }
