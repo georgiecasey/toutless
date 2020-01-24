@@ -24,14 +24,14 @@ constructor(
         get() = _eventsListLiveData
 
     fun getEvents() =
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.IO) {
             val events = eventDao.fetchAll()
             if (events.count() == 0) getEventsRemote()
             _eventsListLiveData.postValue(events)
         }
 
     fun getEventsRemote() {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.IO) {
             val events = toutlessApi.getEvents().await()
             if (events.isSuccessful) {
                 val eventsEntities = events.body()?.events?.map {
@@ -44,7 +44,7 @@ constructor(
     }
 
     fun toggleEventFavourite(toutlessThreadId: String, isFavourite: Boolean) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.IO) {
             eventDao.updateFavourite(toutlessThreadId, isFavourite)
             getEvents();
         }

@@ -31,20 +31,20 @@ constructor(
         get() = _currentEvent
 
     fun getCurrentEvent(toutlessThreadId: String) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.IO) {
             val event = eventDao.fetchById(toutlessThreadId)
             _currentEvent.postValue(event)
         }
     }
 
     fun updateEventBuyingOrSelling(toutlessThreadId: String, buyingOrSelling: BuyingOrSellingField) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.IO) {
             eventDao.updateBuyingOrSelling(toutlessThreadId, buyingOrSelling)
         }
     }
 
     fun getEventPosts(toutlessThreadId: String, buyingOrSelling: BuyingOrSellingField) =
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.IO) {
             Timber.d("postDao.getEventPosts")
             val posts = postDao.fetchAllByThreadId(toutlessThreadId)
             if (posts.count() == 0) getEventPostsRemote(toutlessThreadId, buyingOrSelling)
@@ -52,7 +52,7 @@ constructor(
         }
 
     fun getEventPostsRemote(toutlessThreadId: String, buyingOrSelling: BuyingOrSellingField) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.IO) {
             val posts = toutlessApi.getEventPosts(toutlessThreadId).await()
             if (posts.isSuccessful) {
                 val postsEntities = posts.body()?.posts?.map {
