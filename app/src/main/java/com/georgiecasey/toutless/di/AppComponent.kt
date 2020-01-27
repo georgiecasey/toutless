@@ -1,9 +1,12 @@
 package com.georgiecasey.toutless.di
 
 import com.georgiecasey.toutless.ToutlessApplication
+import com.georgiecasey.toutless.di.workmanager.DaggerWorkerFactory
+import com.georgiecasey.toutless.di.workmanager.WorkerSubComponent
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
+import dagger.android.AndroidInjector
 import javax.inject.Singleton
 
 @Singleton
@@ -14,7 +17,11 @@ import javax.inject.Singleton
     DataModule::class,
     FragmentBuilder::class,
     ViewModelModule::class])
-interface AppComponent {
+interface AppComponent : AndroidInjector<ToutlessApplication> {
+    fun daggerWorkerFactory(): DaggerWorkerFactory
+
+    fun workerSubcomponentBuilder(): WorkerSubComponent.Builder
+
     @Component.Builder
     interface Builder {
         @BindsInstance
@@ -22,6 +29,4 @@ interface AppComponent {
 
         fun build(): AppComponent
     }
-
-    fun inject(application: ToutlessApplication)
 }

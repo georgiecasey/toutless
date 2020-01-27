@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "940069449308",
+    "firebase_url": "https://toutless-f8f5a.firebaseio.com",
+    "project_id": "toutless-f8f5a",
+    "storage_bucket": "toutless-f8f5a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:940069449308:android:9792895c855d99e5d80099",
+        "android_client_info": {
+          "package_name": "com.georgiecasey.toutless"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "940069449308-pq1n71e7k0bm4tfo9n94rlb7qhplobc9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbFAZFWp7i9nnhczxNxhOIs7-8xUuRjtY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "940069449308-pq1n71e7k0bm4tfo9n94rlb7qhplobc9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
