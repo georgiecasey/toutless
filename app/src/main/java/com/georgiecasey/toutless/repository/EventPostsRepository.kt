@@ -1,15 +1,21 @@
 package com.georgiecasey.toutless.repository
 
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
+import com.georgiecasey.toutless.ToutlessApplication
 import com.georgiecasey.toutless.api.ToutlessApi
 import com.georgiecasey.toutless.room.entities.EventDao
 import com.georgiecasey.toutless.room.entities.Post
 import com.georgiecasey.toutless.room.entities.PostDao
+import com.georgiecasey.toutless.service.workers.PostEventBuyingOrSellingWorker
 import com.georgiecasey.toutless.ui.BuyingOrSellingField
 import javax.inject.Inject
 
 class EventPostsRepository
 @Inject
 constructor(
+    private val application: ToutlessApplication,
     private val eventDao: EventDao,
     private val postDao: PostDao,
     private val toutlessApi: ToutlessApi
@@ -20,6 +26,10 @@ constructor(
 
     fun updateEventBuyingOrSelling(toutlessThreadId: String, buyingOrSelling: BuyingOrSellingField) {
         eventDao.updateBuyingOrSelling(toutlessThreadId, buyingOrSelling)
+        val postWorkRequest = OneTimeWorkRequestBuilder<PostEventBuyingOrSellingWorker>()
+            .setInputData(workDataOf(PostEventBuyingOrSellingWorker.ARG_TOUTLESS_THREAD_ID to toutlessThreadId, PostEventBuyingOrSellingWorker.ARG_BUYING_OR_SELLING to buyingOrSelling?.roomString))
+            .build()
+        WorkManager.getInstance(application).enqueue(postWorkRequest)
     }
 
     suspend fun getEventPosts(toutlessThreadId: String, buyingOrSelling: BuyingOrSellingField): List<Post> {

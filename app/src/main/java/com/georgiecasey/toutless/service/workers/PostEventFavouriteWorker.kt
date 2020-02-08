@@ -1,9 +1,7 @@
 package com.georgiecasey.toutless.service.workers
 
-import androidx.work.CoroutineWorker
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
-import androidx.work.WorkerParameters
+import android.content.Context
+import androidx.work.*
 import com.georgiecasey.toutless.ToutlessApplication
 import com.georgiecasey.toutless.api.ToutlessApi
 import com.georgiecasey.toutless.di.workmanager.WorkerKey
@@ -14,20 +12,25 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import javax.inject.Inject
 
-class PostFcmTokenWorker
+class PostEventFavouriteWorker
 @Inject
 constructor(application: ToutlessApplication,
             workerParams: WorkerParameters,
             private val toutlessApi: ToutlessApi) : CoroutineWorker(application, workerParams) {
     override suspend fun doWork(): Result {
-        val token = inputData.getString(ARG_FCM_TOKEN)
-        val currentToken = inputData.getString(ARG_CURRENT_FCM_TOKEN)
-        if (token.isNullOrEmpty() || currentToken.isNullOrEmpty()) return Result.failure()
+        val token = applicationContext.prefs.fcmToken
+        val toutlessThreadId = inputData.getString(ARG_TOUTLESS_THREAD_ID)
+        if (inputData.hasKeyWithValueOfType<Boolean>(ARG_IS_FAVOURITE) == false ||
+            token.isNullOrEmpty() ||
+            toutlessThreadId.isNullOrEmpty()) {
+            return Result.failure()
+        }
 
-        val response = toutlessApi.postFcmToken(currentToken, token).await()
+        val isFavourite = inputData.getBoolean(ARG_IS_FAVOURITE, false)
+
+        val response = toutlessApi.postEventFavourite(token, toutlessThreadId, isFavourite).await()
 
         if (response.isSuccessful) {
-            applicationContext.prefs.fcmToken = token
             return Result.success()
         }
 
@@ -38,12 +41,12 @@ constructor(application: ToutlessApplication,
     abstract class Builder {
         @Binds
         @IntoMap
-        @WorkerKey(PostFcmTokenWorker::class)
-        abstract fun bindPostFcmTokenWorker(worker: PostFcmTokenWorker): CoroutineWorker
+        @WorkerKey(PostEventFavouriteWorker::class)
+        abstract fun bindPostEventFavouriteWorker(worker: PostEventFavouriteWorker): CoroutineWorker
     }
 
     companion object {
-        const val ARG_FCM_TOKEN = "arg.fcm_token"
-        const val ARG_CURRENT_FCM_TOKEN = "arg.current_fcm_token"
+        const val ARG_TOUTLESS_THREAD_ID = "arg.toutless_thread_id"
+        const val ARG_IS_FAVOURITE = "arg.is_favourite"
     }
 }
