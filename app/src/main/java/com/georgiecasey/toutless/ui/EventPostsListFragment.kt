@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -13,10 +14,12 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.georgiecasey.toutless.R
+import com.georgiecasey.toutless.api.Status
 import com.tapadoo.pagerpushpoc.arch.BaseFragment
 import dagger.android.support.AndroidSupportInjection
 import io.ghyeok.stickyswitch.widget.StickySwitch
 import kotlinx.android.synthetic.main.fragment_event_posts_list.*
+import kotlinx.android.synthetic.main.fragment_events_list.*
 import kotlinx.android.synthetic.main.fragment_events_list.srSwipe
 import org.jetbrains.annotations.NotNull
 import timber.log.Timber
@@ -84,10 +87,19 @@ class EventPostsListFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         )
         srSwipe.setOnRefreshListener(this)
 
-        viewModel.eventPostsListLiveData.observe(viewLifecycleOwner, Observer { posts ->
-            srSwipe.isRefreshing = false
-            rvPosts.visibility = View.VISIBLE
-            eventPostsRecyclerAdapter.submitList(posts)
+        viewModel.eventPostsListLiveData.observe(viewLifecycleOwner, Observer {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    srSwipe.isRefreshing = false
+                    rvPosts.visibility = View.VISIBLE
+                    eventPostsRecyclerAdapter.submitList(it.data)
+                }
+                Status.ERROR -> {
+                    srSwipe.isRefreshing = false
+                    Toast.makeText(requireContext(), it.message!!, Toast.LENGTH_LONG).show()
+                }
+            }
+
         })
     }
 

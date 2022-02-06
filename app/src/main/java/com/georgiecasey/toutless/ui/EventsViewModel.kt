@@ -1,6 +1,7 @@
 package com.georgiecasey.toutless.ui
 
 import androidx.lifecycle.*
+import com.georgiecasey.toutless.api.Resource
 import com.georgiecasey.toutless.repository.EventsRepository
 import com.georgiecasey.toutless.room.entities.Event
 import kotlinx.coroutines.Dispatchers
@@ -12,8 +13,8 @@ class EventsViewModel
 constructor(
     private val eventRepo: EventsRepository
 ) : ViewModel() {
-    private val _eventsListLiveData = MutableLiveData<List<Event>>()
-    val eventsListLiveData: LiveData<List<Event>>
+    private val _eventsListLiveData = MutableLiveData<Resource<List<Event>>>()
+    val eventsListLiveData: LiveData<Resource<List<Event>>>
         get() = _eventsListLiveData
 
     fun getEvents() {

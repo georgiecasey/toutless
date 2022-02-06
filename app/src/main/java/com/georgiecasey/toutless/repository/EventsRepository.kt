@@ -4,6 +4,8 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.georgiecasey.toutless.ToutlessApplication
+import com.georgiecasey.toutless.api.Resource
+import com.georgiecasey.toutless.api.ResponseHandler
 import com.georgiecasey.toutless.api.ToutlessApi
 import com.georgiecasey.toutless.room.entities.Event
 import com.georgiecasey.toutless.room.entities.EventDao
@@ -15,27 +17,28 @@ class EventsRepository
 constructor(
     private val application: ToutlessApplication,
     private val eventDao: EventDao,
-    private val toutlessApi: ToutlessApi
+    private val toutlessApi: ToutlessApi,
+    private val responseHandler: ResponseHandler
 ) {
-
-    suspend fun getEvents(): List<Event> {
+    suspend fun getEvents(): Resource<List<Event>> {
         val events = eventDao.fetchAll()
         if (events.count() == 0) {
             return getEventsRemote()
         }
-        return events
+        return responseHandler.handleSuccess(events)
     }
 
-    suspend fun getEventsRemote(): List<Event> {
-        val events = toutlessApi.getEvents().await()
-        if (events.isSuccessful) {
+    suspend fun getEventsRemote(): Resource<List<Event>> {
+        try {
+            val events = toutlessApi.getEvents().await()
             val eventsEntities = events.body()?.events?.map {
                 Event.fromDto(it)
             }
             eventDao.insertOrUpdateAll(eventsEntities)
+            return responseHandler.handleSuccess(eventDao.fetchAll())
+        } catch (e: Exception) {
+            return responseHandler.handleException(e)
         }
-
-        return eventDao.fetchAll()
     }
 
     fun toggleEventFavourite(toutlessThreadId: String, isFavourite: Boolean) {

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.georgiecasey.toutless.R
+import com.georgiecasey.toutless.api.Status
 import com.tapadoo.pagerpushpoc.arch.BaseFragment
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_events_list.*
@@ -57,10 +59,18 @@ class EventsListFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener,
         rvEvents.itemAnimator = animator
         srSwipe.setOnRefreshListener(this)
 
-        viewModel.eventsListLiveData.observe(viewLifecycleOwner, Observer { events ->
-            srSwipe.isRefreshing = false
-            rvEvents.visibility = View.VISIBLE
-            eventsRecyclerAdapter.setItems(events)
+        viewModel.eventsListLiveData.observe(viewLifecycleOwner, Observer {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    srSwipe.isRefreshing = false
+                    rvEvents.visibility = View.VISIBLE
+                    eventsRecyclerAdapter.setItems(it.data!!)
+                }
+                Status.ERROR -> {
+                    srSwipe.isRefreshing = false
+                    Toast.makeText(requireContext(), it.message!!, Toast.LENGTH_LONG).show()
+                }
+            }
         })
         eventsRecyclerAdapter.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
             override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {

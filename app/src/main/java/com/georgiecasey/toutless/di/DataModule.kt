@@ -4,6 +4,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.georgiecasey.toutless.BuildConfig
 import com.georgiecasey.toutless.ToutlessApplication
+import com.georgiecasey.toutless.api.ResponseHandler
 import com.georgiecasey.toutless.api.moshi.TimeToMillisAdapter
 import com.georgiecasey.toutless.room.ToutlessDatabase
 import com.georgiecasey.toutless.room.entities.EventDao
@@ -49,4 +50,8 @@ object DataModule {
     @Provides
     fun providePostDao(database: ToutlessDatabase): PostDao =
         database.postDao()
+
+    // georgie: is this a singleton? should it be a singleton?
+    @Provides
+    fun provideResponseHandler(): ResponseHandler = ResponseHandler()
 }

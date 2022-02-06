@@ -4,6 +4,8 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.georgiecasey.toutless.ToutlessApplication
+import com.georgiecasey.toutless.api.Resource
+import com.georgiecasey.toutless.api.ResponseHandler
 import com.georgiecasey.toutless.api.ToutlessApi
 import com.georgiecasey.toutless.room.entities.EventDao
 import com.georgiecasey.toutless.room.entities.Post
@@ -18,7 +20,8 @@ constructor(
     private val application: ToutlessApplication,
     private val eventDao: EventDao,
     private val postDao: PostDao,
-    private val toutlessApi: ToutlessApi
+    private val toutlessApi: ToutlessApi,
+    private val responseHandler: ResponseHandler
 ) {
 
     fun getCurrentEvent(toutlessThreadId: String) =
@@ -32,26 +35,25 @@ constructor(
         WorkManager.getInstance(application).enqueue(postWorkRequest)
     }
 
-    suspend fun getEventPosts(toutlessThreadId: String, buyingOrSelling: BuyingOrSellingField): List<Post> {
+    suspend fun getEventPosts(toutlessThreadId: String, buyingOrSelling: BuyingOrSellingField): Resource<List<Post>> {
         val posts = postDao.fetchAllByThreadId(toutlessThreadId)
         if (posts.count() == 0) {
             return getEventPostsRemote(toutlessThreadId, buyingOrSelling)
         }
-        return filterPosts(posts, buyingOrSelling)
+        return responseHandler.handleSuccess(filterPosts(posts, buyingOrSelling))
     }
 
-    suspend fun getEventPostsRemote(toutlessThreadId: String, buyingOrSelling: BuyingOrSellingField): List<Post> {
-        val posts = toutlessApi.getEventPosts(toutlessThreadId).await()
-        if (posts.isSuccessful) {
+    suspend fun getEventPostsRemote(toutlessThreadId: String, buyingOrSelling: BuyingOrSellingField): Resource<List<Post>> {
+        return try {
+            val posts = toutlessApi.getEventPosts(toutlessThreadId).await()
             val postsEntities = posts.body()?.posts?.map {
                 Post.fromDto(it)
             }
             postDao.insertAll(postsEntities)
-            postsEntities?.let {
-                return filterPosts(it, buyingOrSelling)
-            }
+            responseHandler.handleSuccess(filterPosts(postsEntities!!, buyingOrSelling))
+        } catch (e: Exception) {
+            responseHandler.handleException(e)
         }
-        return emptyList<Post>()
     }
 
     fun filterPosts(posts: List<Post>, buyingOrSelling: BuyingOrSellingField): List<Post> {
