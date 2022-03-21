@@ -1,5 +1,8 @@
 package com.georgiecasey.toutless.ui
 
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,13 +10,16 @@ import android.widget.CheckBox
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.ListPreloader
+import com.bumptech.glide.RequestBuilder
 import com.georgiecasey.toutless.R
 import com.georgiecasey.toutless.room.entities.Event
 import kotlinx.android.synthetic.main.item_event.view.*
+import android.graphics.drawable.Drawable
+import com.bumptech.glide.Glide
 
 class EventsRecyclerAdapter(private val listener: OnEventClickListener) :
     RecyclerView.Adapter<EventsRecyclerAdapter.ViewHolder>() {
-
     private var items = mutableListOf<Event>()
 
     interface OnEventClickListener {
@@ -43,13 +49,12 @@ class EventsRecyclerAdapter(private val listener: OnEventClickListener) :
         this.items.addAll(newItems)
     }
 
-    inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
-        private var view: View = v
+    inner class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         private var event: Event? = null
 
         init {
-            v.setOnClickListener(this)
-            v.cbFavourite.setOnClickListener(this)
+            view.setOnClickListener(this)
+            view.cbFavourite.setOnClickListener(this)
         }
 
         override fun onClick(v: View) {
@@ -75,6 +80,12 @@ class EventsRecyclerAdapter(private val listener: OnEventClickListener) :
             view.tvEventDates.text = event.eventDates
             event.isFavourite?.let { view.cbFavourite.isChecked = it }
             view.tvNumberOfPosts.text = event.numberOfPosts.toString()
+            Glide
+                .with(view.context)
+                .load("http://www.georgiecasey.com/toutless_api/event_image.php?toutless_thread_id="+event.toutlessThreadId)
+                .override(640, 640)
+                .dontTransform()
+                .into(view.ivSpotifyImage)
         }
     }
 
@@ -119,4 +130,21 @@ class EventsRecyclerAdapter(private val listener: OnEventClickListener) :
             notifyItemRangeRemoved(position, count)
         }
     }
+
+    inner class GlidePreloadModelProvider(val context: Context): ListPreloader.PreloadModelProvider<Event> {
+        override fun getPreloadItems(position: Int): List<Event> {
+            return items.subList(position, position+1)
+        }
+
+        override fun getPreloadRequestBuilder(event: Event): RequestBuilder<*>? {
+            return Glide
+                .with(context)
+                .load("http://www.georgiecasey.com/toutless_api/event_image.php?toutless_thread_id="+event.toutlessThreadId)
+                .override(640, 640)
+                .dontTransform()
+        }
+    }
 }
+
+
+

@@ -22,6 +22,10 @@ import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_events_list.*
 import timber.log.Timber
 import javax.inject.Inject
+import com.bumptech.glide.Glide
+import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
+import com.bumptech.glide.util.FixedPreloadSizeProvider
+import com.georgiecasey.toutless.room.entities.Event
 
 class EventsListFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, EventsRecyclerAdapter.OnEventClickListener{
     @Inject
@@ -58,6 +62,14 @@ class EventsListFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener,
         animator.moveDuration = 500
         rvEvents.itemAnimator = animator
         srSwipe.setOnRefreshListener(this)
+
+        val sizeProvider =
+            FixedPreloadSizeProvider<Event>(640, 640)
+        val modelProvider = eventsRecyclerAdapter.GlidePreloadModelProvider(requireContext())
+        val preloader = RecyclerViewPreloader(
+            Glide.with(this), modelProvider, sizeProvider, 10 /*maxPreload*/
+        )
+        rvEvents.addOnScrollListener(preloader)
 
         viewModel.eventsListLiveData.observe(viewLifecycleOwner, Observer {
             when (it.status) {

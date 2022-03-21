@@ -19,9 +19,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
+
+        <ImageView
+            android:id="@+id/ivSpotifyImage"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:background="#752323"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <TextView
             android:id="@+id/tvEventName"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
@@ -29,14 +39,12 @@
             android:text="Dermot Kennedy"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="@color/blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivSpotifyImage"
             app:layout_constraintTop_toTopOf="parent"
             />
         <TextView
             android:id="@+id/tvVenue"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
@@ -45,7 +53,7 @@
             android:textColor="@color/light_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivSpotifyImage"
             app:layout_constraintTop_toBottomOf="@id/tvEventName"
             />
         <CheckBox android:id="@+id/cbFavourite"
