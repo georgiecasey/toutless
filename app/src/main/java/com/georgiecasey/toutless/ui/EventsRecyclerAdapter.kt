@@ -1,8 +1,6 @@
 package com.georgiecasey.toutless.ui
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +13,6 @@ import com.bumptech.glide.RequestBuilder
 import com.georgiecasey.toutless.R
 import com.georgiecasey.toutless.room.entities.Event
 import kotlinx.android.synthetic.main.item_event.view.*
-import android.graphics.drawable.Drawable
 import com.bumptech.glide.Glide
 
 class EventsRecyclerAdapter(private val listener: OnEventClickListener) :
@@ -83,6 +80,7 @@ class EventsRecyclerAdapter(private val listener: OnEventClickListener) :
             Glide
                 .with(view.context)
                 .load("http://www.georgiecasey.com/toutless_api/event_image.php?toutless_thread_id="+event.toutlessThreadId)
+                .error(R.drawable.no_artist_image_found)
                 .override(640, 640)
                 .dontTransform()
                 .into(view.ivSpotifyImage)
@@ -140,6 +138,7 @@ class EventsRecyclerAdapter(private val listener: OnEventClickListener) :
             return Glide
                 .with(context)
                 .load("http://www.georgiecasey.com/toutless_api/event_image.php?toutless_thread_id="+event.toutlessThreadId)
+                .error(R.drawable.no_artist_image_found)
                 .override(640, 640)
                 .dontTransform()
         }

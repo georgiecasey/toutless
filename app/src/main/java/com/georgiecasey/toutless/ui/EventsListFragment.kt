@@ -67,7 +67,7 @@ class EventsListFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener,
             FixedPreloadSizeProvider<Event>(640, 640)
         val modelProvider = eventsRecyclerAdapter.GlidePreloadModelProvider(requireContext())
         val preloader = RecyclerViewPreloader(
-            Glide.with(this), modelProvider, sizeProvider, 10 /*maxPreload*/
+            Glide.with(this), modelProvider, sizeProvider, 50 /*maxPreload*/
         )
         rvEvents.addOnScrollListener(preloader)
 
