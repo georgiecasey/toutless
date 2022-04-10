@@ -39,6 +39,7 @@
             android:text="Dermot Kennedy"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="@color/blue"
+            android:fontFamily="@font/gotham_medium"
             app:layout_constraintStart_toEndOf="@id/ivSpotifyImage"
             app:layout_constraintTop_toTopOf="parent"
             />
@@ -46,14 +47,13 @@
             android:id="@+id/tvVenue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             android:text="Olympia"
             android:textAppearance="?android:textAppearanceSmall"
             android:textColor="@color/light_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@id/ivSpotifyImage"
+            android:fontFamily="@font/gotham_book"
+            app:layout_constraintStart_toStartOf="@id/tvEventName"
             app:layout_constraintTop_toBottomOf="@id/tvEventName"
             />
         <CheckBox android:id="@+id/cbFavourite"
@@ -70,11 +70,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:gravity="start"
             android:text="13th-16th May 2019"
             android:textAppearance="?android:textAppearanceSmall"
             android:textColor="@color/gray"
-            app:layout_constraintBottom_toBottomOf="@+id/tvNumberOfPosts"
+            android:fontFamily="@font/gotham_book"
             app:layout_constraintStart_toStartOf="@+id/tvEventName"
             app:layout_constraintTop_toBottomOf="@+id/tvVenue" />
 
@@ -88,12 +87,15 @@
             android:text="16 posts"
             android:textAppearance="?android:textAppearanceListItemSmall"
             android:textColor="@color/green"
-            app:layout_constraintEnd_toStartOf="@id/tvNumberOfNewPosts"
-            app:layout_constraintTop_toBottomOf="@+id/tvEventName" />
+            android:fontFamily="@font/gotham_book"
+            app:layout_constraintStart_toStartOf="@+id/tvEventName"
+            app:layout_constraintTop_toBottomOf="@+id/tvEventDates"
+            app:layout_constraintBottom_toBottomOf="parent" />
         <TextView
             android:id="@+id/tvNumberOfNewPosts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
@@ -101,8 +103,9 @@
             android:text="(4 new)"
             android:textAppearance="?android:textAppearanceListItemSmall"
             android:textColor="@color/red"
-            app:layout_constraintEnd_toEndOf="@id/tvEventName"
-            app:layout_constraintTop_toBottomOf="@+id/tvEventName" />
+            android:fontFamily="@font/gotham_book"
+            app:layout_constraintStart_toEndOf="@id/tvNumberOfPosts"
+            app:layout_constraintBottom_toBottomOf="@id/tvNumberOfPosts"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
